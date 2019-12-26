@@ -2,6 +2,7 @@ package hello.controller;
 
 import hello.dao.UserDOMapper;
 import hello.dataObject.UserDO;
+import hello.response.CommonReturnType;
 import hello.service.UserService;
 import hello.service.imp.UserServiceImp;
 import hello.service.model.UserModel;
@@ -20,15 +21,15 @@ public class UserController {
 
     @RequestMapping("/get")
     @ResponseBody
-    public UserModel getUserById(@RequestParam("id") Integer id){
+    public CommonReturnType getUserById(@RequestParam("id") Integer id){
         UserModel userModel = userServiceImp.getUserModelById(id);
-        return userModel;
+        return CommonReturnType.create(userModel);
     }
 
     @RequestMapping("/get2")
     @ResponseBody
-    public UserModelVO getUserById2(@RequestParam("id") Integer id){
+    public CommonReturnType getUserById2(@RequestParam("id") Integer id){
         UserModelVO userModelVO = userServiceImp.getUserModelVOById(id);
-        return userModelVO;
+        return CommonReturnType.create(userModelVO);
     }
 }
