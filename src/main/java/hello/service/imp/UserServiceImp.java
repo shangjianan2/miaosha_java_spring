@@ -23,6 +23,7 @@ public class UserServiceImp implements UserService {
         UserModel userModel = new UserModel();
         UserDO userDO = userDOMapper.selectByPrimaryKey(id);
         UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(id);
+        if(userDO == null || userPasswordDO == null) return null;
         BeanUtils.copyProperties(userDO, userModel);
         userModel.setPassword(userPasswordDO.getPassword());
         return userModel;
@@ -32,6 +33,7 @@ public class UserServiceImp implements UserService {
     public UserModelVO getUserModelVOById(Integer id) {
         UserModelVO userModelVO = new UserModelVO();
         UserDO userDO = userDOMapper.selectByPrimaryKey(id);
+        if(userDOMapper == null) return null;
         BeanUtils.copyProperties(userDO, userModelVO);
         return userModelVO;
     }
