@@ -7,4 +7,5 @@ public interface UserService {
 
     UserModel getUserModelById(Integer id);
     UserModelVO getUserModelVOById(Integer id);
+    void setMapByUserModel(UserModel userModel);
 }

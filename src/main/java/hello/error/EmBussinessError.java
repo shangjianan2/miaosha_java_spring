@@ -3,7 +3,9 @@ package hello.error;
 public enum EmBussinessError implements CommonError{
     SUCCESS(10000, "SUCCESS"),
     UNKNOWN_ERROR(10002, "unknow error"),
-    USER_NOT_EXIST(10001, "can not find user");
+    USER_NOT_EXIST(10001, "can not find user"),
+    OPT_UNVALID(10003, "the opt is unvalid"),
+    MYSQL_ERROR(10004, "mysql error");
 
     private Integer errCode;
     private String errMsg;
