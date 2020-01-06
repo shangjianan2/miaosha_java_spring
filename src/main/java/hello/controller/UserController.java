@@ -13,10 +13,12 @@ import hello.service.model.UserModel;
 import hello.service.model.UserModelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Controller("wjl")
@@ -87,5 +89,43 @@ public class UserController extends BaseController{
             throw new BussinessException(EmBussinessError.MYSQL_ERROR, e.getMessage());
         }
         return CommonReturnType.create(EmBussinessError.SUCCESS, "success");
+    }
+
+    @RequestMapping(path = "/login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORM})
+    @ResponseBody
+    public CommonReturnType login(@RequestParam("telephone") String telephone,
+                                  @RequestParam("password") String password) throws BussinessException {
+        if(StringUtils.isEmpty(telephone) || StringUtils.isEmpty(password)){
+            throw new BussinessException(EmBussinessError.USERNAME_OR_PASSWORD_WRONG, "name or password is null");
+        }
+        UserModel userModel = userService.verifyPassword(telephone, password);
+        httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
+        httpServletRequest.getSession().setAttribute("telephone", telephone);
+        return CommonReturnType.create(userModel);
+    }
+
+    @RequestMapping("/session")
+    @ResponseBody
+    public CommonReturnType session(){
+        Enumeration<String> enumeration = httpServletRequest.getSession().getAttributeNames();
+        List<String> list = new ArrayList<>();
+        while(enumeration.hasMoreElements()){
+            String key = enumeration.nextElement();
+            String val = String.valueOf(httpServletRequest.getSession().getAttribute(key));
+            list.add(key + ": " + val);
+        }
+        String id = httpServletRequest.getSession().getId();
+        list.add("id: " + id);
+        return CommonReturnType.create(list);
+
+    }
+    @RequestMapping("/cookies")
+    @ResponseBody
+    public CommonReturnType cookies(){
+        HashMap<String, String> map = new HashMap<>();
+        for(Cookie cookie : httpServletRequest.getCookies()){
+            map.put(cookie.getName(), cookie.getValue());
+        }
+        return CommonReturnType.create(map);
     }
 }

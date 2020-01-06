@@ -51,6 +51,22 @@ public class UserServiceImp implements UserService {
         userPasswordDOMapper.insertSelective(userPasswordDO);
     }
 
+    @Override
+    public UserModel verifyPassword(String telephone, String password_web) throws BussinessException {
+        UserDO userDO = userDOMapper.selectByTelephone(telephone);
+        if(userDO == null){
+            throw new BussinessException(EmBussinessError.USER_NOT_EXIST);
+        }
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
+        if(!com.alibaba.druid.util.StringUtils.equals(userPasswordDO.getPassword(), password_web)){
+            throw new BussinessException(EmBussinessError.USERNAME_OR_PASSWORD_WRONG);
+        }
+        UserModel userModel = new UserModel();
+        BeanUtils.copyProperties(userDO, userModel);
+        userModel.setPassword(userPasswordDO.getPassword());
+        return userModel;
+    }
+
     public UserDO convertUserModelTOUserDO(UserModel userModel){
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(userModel, userDO);
