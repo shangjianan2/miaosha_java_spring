@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImp implements ItemService {
@@ -53,7 +54,13 @@ public class ItemServiceImp implements ItemService {
 
     @Override
     public List<ItemModel> getItemList() {
-        return null;
+        List<ItemInfo> itemInfoList = itemInfoMapper.selectAll();
+        List<ItemModel> itemModelList = itemInfoList.stream().map(itemInfo -> {
+            ItemStock itemStock = itemStockMapper.selectByItemId(itemInfo.getId());
+            ItemModel itemModel = this.convertItemModel(itemInfo, itemStock);
+            return itemModel;
+        }).collect(Collectors.toList());
+        return itemModelList;
     }
 
     @Override

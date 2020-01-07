@@ -42,6 +42,7 @@ public class UserServiceImp implements UserService {
         return userModelVO;
     }
 
+    @Transactional
     @Override
     public void setMapByUserModel(UserModel userModel){
         UserDO userDO = convertUserModelTOUserDO(userModel);

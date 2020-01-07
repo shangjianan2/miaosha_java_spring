@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller("wjl2")
 @RequestMapping("/item")
@@ -44,5 +45,12 @@ public class ItemController extends BaseController {
         ItemModel itemModelReturn = itemService.createItem(itemModel);
         ItemModelVO itemModelVO = this.convertItemModeVOFromItemModel(itemModelReturn);
         return CommonReturnType.create(itemModelVO);
+    }
+
+    @RequestMapping(path = "/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType listAllItem(){
+        List<ItemModel> itemModelList = itemService.getItemList();
+        return CommonReturnType.create(itemModelList);
     }
 }
