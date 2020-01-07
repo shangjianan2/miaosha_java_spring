@@ -1,9 +1,15 @@
 package hello.service.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class UserModel {
     private Integer id;
     private String name;
     private Integer gender;
+    @Max(value = 200, message = "too old")
+    @Min(value = 0, message = "too young")
     private Integer age;
     private String telephone;
     private String registerMode;

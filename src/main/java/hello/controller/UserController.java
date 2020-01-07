@@ -11,6 +11,8 @@ import hello.service.UserService;
 import hello.service.imp.UserServiceImp;
 import hello.service.model.UserModel;
 import hello.service.model.UserModelVO;
+import hello.validate.ValidationResult;
+import hello.validate.ValidatorImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -29,6 +31,8 @@ public class UserController extends BaseController{
     private UserService userService;
     @Autowired
     private HttpServletRequest httpServletRequest;
+    @Autowired
+    private ValidatorImp validatorImp;
 
     @RequestMapping("/get")
     @ResponseBody
@@ -83,6 +87,12 @@ public class UserController extends BaseController{
         userModel.setRegisterMode("telephone");
         userModel.setTelephone(telephone);
         userModel.setThirdPartyId("");
+
+        ValidationResult validationResult = validatorImp.validate(userModel);
+        if(validationResult.isError()){
+            throw new BussinessException(EmBussinessError.MYSQL_ERROR, validationResult.getErrorMsg());
+        }
+
         try{
             userService.setMapByUserModel(userModel);
         }catch (Exception e){
