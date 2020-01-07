@@ -6,7 +6,8 @@ public enum EmBussinessError implements CommonError{
     USER_NOT_EXIST(10001, "can not find user"),
     OPT_UNVALID(10003, "the opt is unvalid"),
     MYSQL_ERROR(10004, "mysql error"),
-    USERNAME_OR_PASSWORD_WRONG(10005, "name or password is wrong");
+    USERNAME_OR_PASSWORD_WRONG(10005, "name or password is wrong"),
+    ILLEGAL_PARAMETER(10006, "the parameter is illegal");
 
     private Integer errCode;
     private String errMsg;
