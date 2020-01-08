@@ -53,4 +53,11 @@ public class ItemController extends BaseController {
         List<ItemModel> itemModelList = itemService.getItemList();
         return CommonReturnType.create(itemModelList);
     }
+
+    @RequestMapping(path = "/get", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getItemDetails(@RequestParam("id") Integer id){
+        ItemModel itemModel = itemService.getItemInfoById(id);
+        return CommonReturnType.create(itemModel);
+    }
 }
